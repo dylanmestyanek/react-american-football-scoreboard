@@ -4,22 +4,34 @@ import BottomRow from "./BottomRow";
 
 function App() {
   const [homeTeamPoints, setHomeTeamPoints] = useState(0); 
-  const [awayTeamPoints, setAwayTeamPoints] = useState(0); 
+  const [awayTeamPoints, setAwayTeamPoints] = useState(0);
+  const [gameQuarter, setGameQuarter] = useState(1); 
+  let [quarterTime, setQuarterTime] = useState(900);
+  let [quarterSeconds, setQuarterSeconds] = useState(0);
+  let [quarterMinutes, setQuarterMinutes] = useState(15)
+  let gameTime;
 
-  const awayTouchDown = () => {
-    setAwayTeamPoints(awayTeamPoints + 7);
+  const awayScore = (team, points) => {
+    setAwayTeamPoints(team + points);
+  };
+
+  const homeScore = (team, points) => {
+    setHomeTeamPoints(team + points);
+  };
+
+  const changeQuarter = () => {
+    setGameQuarter(gameQuarter < 4 ? gameQuarter + 1 : gameQuarter - 3);
   }
 
-  const homeTouchDown = () => {
-    setHomeTeamPoints(homeTeamPoints + 7);
-  }
-
-  const awayFieldGoal = () => {
-    setAwayTeamPoints(awayTeamPoints + 3);
-  }
-
-  const homeFieldGoal = () => {
-    setHomeTeamPoints(homeTeamPoints + 3);
+  const quarterCountDown = () => {
+    clearInterval(gameTime);
+    gameTime = setInterval(() => {
+      const minutes = Math.floor(quarterTime / 60);
+      const seconds = quarterTime % 60;
+      setQuarterTime(quarterTime -= 1);
+      setQuarterMinutes(quarterMinutes = minutes);
+      setQuarterSeconds(quarterSeconds = seconds);
+    }, 1000);
   }
 
   return (
@@ -30,23 +42,25 @@ function App() {
             <h2 className="home__name">Lions</h2>
             <div className="home__score">{homeTeamPoints}</div>
           </div>
-          <div className="timer">00:03</div>
+          <div className="timer">{quarterMinutes}:{quarterSeconds < 10 ? 0 : ''}{quarterSeconds}</div>
           <div className="away">
             <h2 className="away__name">Tigers</h2>
             <div className="away__score">{awayTeamPoints}</div>
           </div>
         </div>
-        <BottomRow />
+        <BottomRow quarter = {gameQuarter}/>
       </section>
       <section className="buttons">
         <div className="homeButtons">
           {/* TODO STEP 4 - Now we need to attach our state setter functions to click listeners. */}
-          <button className="homeButtons__touchdown" onClick={homeTouchDown}>Home Touchdown</button>
-          <button className="homeButtons__fieldGoal" onClick={homeFieldGoal}>Home Field Goal</button>
+          <button className="homeButtons__touchdown" onClick={() => homeScore(homeTeamPoints, 7)}>Home Touchdown</button>
+          <button className="homeButtons__fieldGoal" onClick={() => homeScore(homeTeamPoints, 3)}>Home Field Goal</button>
         </div>
+        <button className="quarterButton" onClick={changeQuarter}>Change Quarter</button>
+        <button className="quarterButton" onClick={quarterCountDown}>Start Game</button>
         <div className="awayButtons">
-          <button className="awayButtons__touchdown" onClick={awayTouchDown}>Away Touchdown</button>
-          <button className="awayButtons__fieldGoal" onClick={awayFieldGoal}>Away Field Goal</button>
+          <button className="awayButtons__touchdown" onClick={() => awayScore(awayTeamPoints, 7)}>Away Touchdown</button>
+          <button className="awayButtons__fieldGoal" onClick={() => awayScore(awayTeamPoints, 3)}>Away Field Goal</button>
         </div>
       </section>
     </div>
