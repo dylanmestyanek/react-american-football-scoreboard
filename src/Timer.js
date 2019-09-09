@@ -8,7 +8,10 @@ function Timer(){
     
     useEffect(() =>{
         let gameTime;
+        let timer = document.querySelector('.timer');
+
         if (timerActive){
+            timer.style.color = 'red';
             gameTime = setInterval(() => {
                 const minutes = Math.floor(quarterTime / 60);
                 const seconds = quarterTime % 60;
@@ -17,7 +20,10 @@ function Timer(){
                 setQuarterSeconds(quarterSeconds = seconds);
             }, 1000);
         }
-        return () => clearInterval(gameTime);
+        return () => {
+            timer.style.color = 'white';
+            clearInterval(gameTime);
+        }
     }, [timerActive]);
     
 
