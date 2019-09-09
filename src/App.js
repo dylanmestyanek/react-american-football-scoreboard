@@ -1,42 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
-let gameTime;
+import Timer from "./Timer.js"
 
 function App() {
   const [homeTeamPoints, setHomeTeamPoints] = useState(0); 
   const [awayTeamPoints, setAwayTeamPoints] = useState(0);
   const [gameQuarter, setGameQuarter] = useState(1); 
-  let [quarterTime, setQuarterTime] = useState(900);
-  let [quarterSeconds, setQuarterSeconds] = useState(0);
-  let [quarterMinutes, setQuarterMinutes] = useState(15)
-
+   
   const changeQuarter = () => {
     setGameQuarter(gameQuarter < 4 ? gameQuarter + 1 : gameQuarter - 3);
   }
-
-  const quarterCountDown = () => {
-    clearInterval(gameTime);
-    gameTime = setInterval(() => {
-      const minutes = Math.floor(quarterTime / 60);
-      const seconds = quarterTime % 60;
-      setQuarterTime(quarterTime -= 1);
-      setQuarterMinutes(quarterMinutes = minutes);
-      setQuarterSeconds(quarterSeconds = seconds);
-    }, 1000);
-  }
-
-  const resetTimer = () => {
-    setQuarterTime(900);
-    setQuarterMinutes(15);
-    setQuarterSeconds(0);
-    clearInterval(gameTime);
-  }
-
-  const pauseTimer = () => {
-    clearInterval(gameTime);
-  }
-
+  
   return (
     <div className="container">
       <section className="scoreboard">
@@ -45,7 +20,7 @@ function App() {
             <h2 className="home__name">Lions</h2>
             <div className="home__score">{homeTeamPoints}</div>
           </div>
-          <div className="timer">{quarterMinutes}:{quarterSeconds < 10 ? 0 : ''}{quarterSeconds}</div>
+          <Timer />
           <div className="away">
             <h2 className="away__name">Tigers</h2>
             <div className="away__score">{awayTeamPoints}</div>
@@ -59,10 +34,8 @@ function App() {
           <button className="homeButtons__touchdown" onClick={() => setHomeTeamPoints(homeTeamPoints + 7)}>Home Touchdown</button>
           <button className="homeButtons__fieldGoal" onClick={() => setHomeTeamPoints(homeTeamPoints + 3)}>Home Field Goal</button>
         </div>
-        <button className="quarterButton" onClick={changeQuarter}>Change Quarter</button>
-        <button className="quarterButton" onClick={quarterCountDown}>Start Game</button>
-        <button className="quarterButton" onClick={resetTimer}>Reset Timer</button>
-        <button className="quarterButton" onClick={pauseTimer}>Pause Timer</button>
+        
+          <button className="quarterButton" onClick={changeQuarter}>Change Quarter</button>          
 
         <div className="awayButtons">
           <button className="awayButtons__touchdown" onClick={() => setAwayTeamPoints(awayTeamPoints + 7)}>Away Touchdown</button>
