@@ -26,6 +26,7 @@ function Timer(){
                 clearInterval(gameTime);
             }
         } 
+        
         return () => {
             timer.style.color = 'white';
             clearInterval(gameTime);
@@ -40,15 +41,11 @@ function Timer(){
         setTimerActive(false);
         setFreshTimer(true);
     }
-
-    const toggleTimer = () => {
-        setTimerActive(!timerActive);
-    }
-
+    
     return (
         <div>
             <div className="timer">{quarterMinutes < 10 ? 0 : ''}{quarterMinutes}:{quarterSeconds < 10 ? 0 : ''}{quarterSeconds}</div>
-            <button className="quarterButton" onClick={toggleTimer}>{freshTimer ? 'Start Game' : !timerActive ? 'Resume Game' : 'Pause Game'}</button>
+            <button className="quarterButton" onClick={() => setTimerActive(!timerActive)}>{freshTimer ? 'Start Game' : !timerActive ? 'Resume Game' : 'Pause Game'}</button>
             <button className="quarterButton" onClick={resetTimer}>Reset Timer</button>
         </div>
     );
