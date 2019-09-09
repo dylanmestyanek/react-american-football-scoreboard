@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 function Timer(){
-    let [quarterTime, setQuarterTime] = useState(900);
+    let [quarterTime, setQuarterTime] = useState(3);
     let [quarterSeconds, setQuarterSeconds] = useState(0);
     let [quarterMinutes, setQuarterMinutes] = useState(15);
     let [timerActive, setTimerActive] = useState(false);
@@ -19,12 +19,16 @@ function Timer(){
                 setQuarterMinutes(quarterMinutes = minutes);
                 setQuarterSeconds(quarterSeconds = seconds);
             }, 1000);
-        }
+            
+            if (quarterTime < 0){
+                clearInterval(gameTime);
+            }
+        } 
         return () => {
             timer.style.color = 'white';
             clearInterval(gameTime);
         }
-    }, [timerActive]);
+    }, [timerActive, quarterTime]);
     
 
     const resetTimer = () => {
@@ -40,7 +44,7 @@ function Timer(){
 
     return (
         <div>
-            <div className="timer">{quarterMinutes}:{quarterSeconds < 10 ? 0 : ''}{quarterSeconds}</div>
+            <div className="timer">{quarterMinutes < 10 ? 0 : ''}{quarterMinutes}:{quarterSeconds < 10 ? 0 : ''}{quarterSeconds}</div>
             <button className="quarterButton" onClick={() => setTimerActive(true)}>Start Game</button>
             <button className="quarterButton" onClick={resetTimer}>Reset Timer</button>
             <button className="quarterButton" onClick={toggleTimer}>Pause Timer</button>
