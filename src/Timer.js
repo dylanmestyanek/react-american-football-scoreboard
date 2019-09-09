@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 function Timer(){
-    let [quarterTime, setQuarterTime] = useState(3);
+    let [quarterTime, setQuarterTime] = useState(900);
     let [quarterSeconds, setQuarterSeconds] = useState(0);
     let [quarterMinutes, setQuarterMinutes] = useState(15);
+    let [freshTimer, setFreshTimer] = useState(true);
     let [timerActive, setTimerActive] = useState(false);
     
     useEffect(() =>{
@@ -11,6 +12,7 @@ function Timer(){
         let timer = document.querySelector('.timer');
 
         if (timerActive){
+            setFreshTimer(false);
             timer.style.color = 'red';
             gameTime = setInterval(() => {
                 const minutes = Math.floor(quarterTime / 60);
@@ -36,6 +38,7 @@ function Timer(){
         setQuarterMinutes(15);
         setQuarterSeconds(0);
         setTimerActive(false);
+        setFreshTimer(true);
     }
 
     const toggleTimer = () => {
@@ -45,9 +48,8 @@ function Timer(){
     return (
         <div>
             <div className="timer">{quarterMinutes < 10 ? 0 : ''}{quarterMinutes}:{quarterSeconds < 10 ? 0 : ''}{quarterSeconds}</div>
-            <button className="quarterButton" onClick={() => setTimerActive(true)}>Start Game</button>
+            <button className="quarterButton" onClick={toggleTimer}>{freshTimer ? 'Start Game' : !timerActive ? 'Resume Game' : 'Pause Game'}</button>
             <button className="quarterButton" onClick={resetTimer}>Reset Timer</button>
-            <button className="quarterButton" onClick={toggleTimer}>Pause Timer</button>
         </div>
     );
 }
