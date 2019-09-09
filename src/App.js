@@ -11,14 +11,6 @@ function App() {
   let [quarterMinutes, setQuarterMinutes] = useState(15)
   let gameTime;
 
-  const awayScore = (team, points) => {
-    setAwayTeamPoints(team + points);
-  };
-
-  const homeScore = (team, points) => {
-    setHomeTeamPoints(team + points);
-  };
-
   const changeQuarter = () => {
     setGameQuarter(gameQuarter < 4 ? gameQuarter + 1 : gameQuarter - 3);
   }
@@ -53,14 +45,14 @@ function App() {
       <section className="buttons">
         <div className="homeButtons">
           {/* TODO STEP 4 - Now we need to attach our state setter functions to click listeners. */}
-          <button className="homeButtons__touchdown" onClick={() => homeScore(homeTeamPoints, 7)}>Home Touchdown</button>
-          <button className="homeButtons__fieldGoal" onClick={() => homeScore(homeTeamPoints, 3)}>Home Field Goal</button>
+          <button className="homeButtons__touchdown" onClick={() => setHomeTeamPoints(homeTeamPoints + 7)}>Home Touchdown</button>
+          <button className="homeButtons__fieldGoal" onClick={() => setHomeTeamPoints(homeTeamPoints + 3)}>Home Field Goal</button>
         </div>
         <button className="quarterButton" onClick={changeQuarter}>Change Quarter</button>
         <button className="quarterButton" onClick={quarterCountDown}>Start Game</button>
         <div className="awayButtons">
-          <button className="awayButtons__touchdown" onClick={() => awayScore(awayTeamPoints, 7)}>Away Touchdown</button>
-          <button className="awayButtons__fieldGoal" onClick={() => awayScore(awayTeamPoints, 3)}>Away Field Goal</button>
+          <button className="awayButtons__touchdown" onClick={() => setAwayTeamPoints(awayTeamPoints + 7)}>Away Touchdown</button>
+          <button className="awayButtons__fieldGoal" onClick={() => setAwayTeamPoints(awayTeamPoints + 3)}>Away Field Goal</button>
         </div>
       </section>
     </div>
